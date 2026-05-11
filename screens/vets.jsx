@@ -10,6 +10,15 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import MapView, { Marker, PROVIDER_GOOGLE } from './MapViewWrapper';
+
+const INITIAL_REGION = {
+  latitude: 37.78825,
+  longitude: -122.4324,
+  latitudeDelta: 0.0922,
+  longitudeDelta: 0.0421,
+};
+
 const Vets = () => {
   return (
     <SafeAreaView style={styles.container}>
@@ -23,20 +32,33 @@ const Vets = () => {
         <Text style={styles.headerSubtitle}>Find the best care for your pet</Text>
       </LinearGradient>
 
-      <View style={styles.mapPlaceholder}>
-        <View style={styles.locationButton}>
-          <MaterialCommunityIcons name="near-me" size={20} color="#5ECDC5" />
-        </View>
-        <MaterialCommunityIcons name="map-marker-radius" size={60} color="#5ECDC5" />
-        <Text style={styles.mapText}>Interactive map would display here</Text>
-        <Text style={styles.mapSubtext}>Showing 4 nearby locations</Text>
-      </View>
+
+
+      <View style={styles.mapContainer}>
+      <MapView
+      style={styles.map}
+      provider={PROVIDER_GOOGLE}
+  initialRegion={INITIAL_REGION}
+  >
+  {/* Example Marker for Happy Paws */}
+  <Marker
+  coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
+  title="Happy Paws Clinic"
+  description="General Care"
+  />
+  </MapView>
+
+  {/* Keep your location button if you want it to float on top */}
+  <TouchableOpacity style={styles.locationButton}>
+  <MaterialCommunityIcons name="near-me" size={20} color="#5ECDC5" />
+  </TouchableOpacity>
+  </View>
 
       <View style={styles.listContainer}>
         <Text style={styles.listTitle}>Veterinarians Near You</Text>
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
           
-          <View style={styles.card}>
+          {/*<View style={styles.card}>
             <View style={styles.cardTop}>
               <View>
                 <Text style={styles.clinicName}>Happy Paws Veterinary Clinic</Text>
@@ -59,12 +81,12 @@ const Vets = () => {
                 <Text style={styles.bookButtonText}>Book</Text>
               </TouchableOpacity>
             </View>
-          </View>
+          </View>*/}
 
           <View style={styles.card}>
             <View style={styles.cardTop}>
               <View>
-                <Text style={styles.clinicName}>Pet Care Center</Text>
+                <Text style={styles.clinicName}>Pawpoint Clinic</Text>
                 <Text style={styles.specialty}>Emergency Care</Text>
               </View>
               <View style={styles.ratingBadge}>
@@ -180,7 +202,7 @@ const styles = StyleSheet.create({
     color: '#8a8787', 
     fontSize: 13 },
 
-  ratingBadge: {  
+  ratingBadge: { 
     flexDirection: 'row', 
     alignItems: 'center', 
     backgroundColor: '#FFF9E6', 
@@ -225,7 +247,28 @@ const styles = StyleSheet.create({
     borderRadius: 10 },
 
   bookButtonText: { color: 'white', 
-    fontWeight: 'bold' }
+    fontWeight: 'bold' },
+
+    mapContainer: {
+      height: 250, // Fixed height for the map section
+      width: '100%',
+      overflow: 'hidden',
+    },
+    map: {
+      ...StyleSheet.absoluteFillObject, // This makes the map fill the container
+    },
+
+    // Update locationButton to ensure it stays on top of the map
+    locationButton: {
+      position: 'absolute',
+      top: 20,
+      right: 20,
+      backgroundColor: 'white',
+      padding: 10,
+      borderRadius: 25,
+      elevation: 5,
+      zIndex: 1, // Ensure it sits above the MapView
+    }
 });
 
 export default Vets;
