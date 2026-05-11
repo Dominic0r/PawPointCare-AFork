@@ -3,10 +3,10 @@ import {
   StyleSheet, 
   Text, 
   View, 
-  SafeAreaView, 
   ScrollView, 
   TouchableOpacity 
 } from 'react-native';
+import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FIREBASE_APP } from "../firebaseConfig";
